@@ -68,20 +68,37 @@
 
 			$("#search").click(function(){
 				$("#clickTest").text("click");
-				var path="http://localhost:8888/add";
+				var path="http://localhost:8888/search";
 
 				var response;
 				$.getJSON( path, function(data) {
 					  	console.log( "success" );
 							response = data;
 							console.log(response);
-						})
+						});
+					});
 
+			$("#addRecipe").click(function(){
+				console.log("added");
+				addToDatabase('{"ID":1,"Name":"buffalo-chicken-stuffed-shells","Type":"Dinner","URL":"dummyurl"}')
+				console.log("after");
 			});
 		});
 
+
+		function addToDatabase(data){
+			$.ajax({
+					method: "post",
+					url: 'http://localhost:8080/',
+					data: data,
+					success: function(data, status) { console.log('status: ' + status); },
+					contentType: "application/json",
+			});
+		}
+
 			<!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
 		</script>
+
 
 
 
