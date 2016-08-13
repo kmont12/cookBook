@@ -1,35 +1,90 @@
 <!DOCTYPE html>
 <html lange="en">
 
-	
-	<head>
-		<meta charset="utf-8"/> 
 
+	<head>
+		<meta charset="utf-8"/>
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css"/>
-		<title>My Cookbook</title>	
+		<title>My Cookbook</title>
 	</head>
 	<body>
 
 		<h1 class=center>Cook Book</h1>
-		
+
 		<div id="container">
-			<button type="button" id="search">Search</button>
-			<button type="button">Add Recipe</button>
+			<button type="button" id="searchOptions">Search Options</button>
+			<button type="button" id="addRecipeOptions">Add Recipe Options</button>
+		</div>
+
+
+		<div id="search-options" class=center href="#search-options">
+			<br><br><br>
+			Name: <input type="text" name="name">    Keywords: <input type="text" name="keyword"><br><br>
+			type:<select name="type">
+					<option value="null"></option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Snack">Snack</option>
+					<option value="Meal">Meal</option>
+					<option value="Apps">Appetizer</option>
+					<option value="Dessert">Dessert</option>
+					<option value="Other">Other</option>
+				</select><br><br>
+			<button type="button" id="search" href="#search">Search</button>
+		</div>
+
+		<div id="add-recipe" class=center href="#add-recipe">
+			<br>
+			URL: <input type="text" name="url"> <button type="button" id="aPopulate">Auto Populate</button><br><br>
+			Name: <input type="text" name="name"> Keywords: <input type="text" name="keywords"><br>
+			Cook Time: <input type="text" name="cookTime"> minutes Ratings: <input type="text" name="ratings"><br><br>
+			type:<select name="type">
+					<option value="null"></option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Snack">Snack</option>
+					<option value="Meal">Meal</option>
+					<option value="Apps">Appetizer</option>
+					<option value="Dessert">Dessert</option>
+					<option value="Other">Other</option>
+				</select><br><br>
+			<button type="button" id="addRecipe" href="#addRecipe">Add Recipe</button>
 		</div>
 
 		<div id="siteloader" href="#siteloader" class=center></div>
-		
 
-		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<h3 id="clickTest" href="#clickTest">Intial Text</h3>
+
+
+
 		<script>
-        	
-			$("#search").click(function(){
-				$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');
+		$(document).ready(function(){
+			$("#searchOptions").click(function(){
+				$("#search-options").toggle();
 			});
+
+			$("#addRecipeOptions").click(function(){
+				$("#add-recipe").toggle();
+			})
+
+			$("#search").click(function(){
+				$("#clickTest").text("click");
+				var path="http://localhost:8888/add";
+
+				var response;
+				$.getJSON( path, function(data) {
+					  	console.log( "success" );
+							response = data;
+							console.log(response);
+						})
+
+			});
+		});
+
+			<!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
 		</script>
 
-	
-		
+
+
 	</body>
 
 </html>

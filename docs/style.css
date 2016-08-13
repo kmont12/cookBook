@@ -19,3 +19,11 @@ object {
 #siteloader{
 	text-align: center;
 }
+
+#search-options{
+	display:none;
+}
+
+#add-recipe{
+	display:none;
+}
