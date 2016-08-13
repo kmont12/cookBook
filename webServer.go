@@ -12,7 +12,7 @@ type Profile struct {
 }
 func main(){
 	http.HandleFunc("/",handler)
-	http.HandleFunc("/add", addHandler)
+	http.HandleFunc("/add/", addHandler)
 	http.ListenAndServe(":8888",nil)
 }
 
@@ -24,7 +24,7 @@ func handler(w http.ResponseWriter, r *http.Request){
 
 	 data, err := ioutil.ReadFile("docs/"+string(path))
 
-	log.Println(path)
+	log.Println(path+ " handle func")
 	if err==nil{
 		var contentType string
 		if strings.HasSuffix(path, ".css"){
@@ -52,7 +52,7 @@ func handler(w http.ResponseWriter, r *http.Request){
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request){
-	log.Println(r.URL.Path)
+	log.Println(r.URL.Path+" add handle func")
 	profile := Profile{"Alex", []string{"snowboarding", "programming"}}
 
   js, err := json.Marshal(profile)
