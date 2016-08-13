@@ -10,13 +10,12 @@
 	</head>
 	<body>
 
-		<h1 class=center href="#otherside">Cook Book</h1>
-		<!--<div id="othersite" class=center> 
-			<object type="text/html" data="http://www.google.com" height="800px" style="overflow:auto;border:5px ridge white">
-			</object>
-		 </div> -->
-
-		<h3 class=center>Search</h3>
+		<h1 class=center>Cook Book</h1>
+		
+		<div id="container">
+			<button type="button" id="search">Search</button>
+			<button type="button">Add Recipe</button>
+		</div>
 
 		<div id="siteloader" href="#siteloader" class=center></div>
 		
@@ -24,9 +23,8 @@
 		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 		<script>
         	
-			$(document).ready(function(){
-				$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>').load();
-				$("#othersite").attr('data', 'https://pi-hole.net/');
+			$("#search").click(function(){
+				$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');
 			});
 		</script>
 
