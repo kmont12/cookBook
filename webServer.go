@@ -5,14 +5,21 @@ import ("net/http"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
+	"fmt"
 )
-type Profile struct {
-  Name    string
-  Hobbies []string
+type Recipe struct {
+	ID int
+  Name string
+  Type string
+	URL string
+	keywords string
+	cooktime int
+	rating int
 }
 func main(){
 	http.HandleFunc("/",handler)
-	http.HandleFunc("/add/", addHandler)
+	http.HandleFunc("/search/", searchHandler)
+	http.HandleFunc("/add/",addHandler)
 	http.ListenAndServe(":8888",nil)
 }
 
@@ -51,11 +58,11 @@ func handler(w http.ResponseWriter, r *http.Request){
 	}
 }
 
-func addHandler(w http.ResponseWriter, r *http.Request){
-	log.Println(r.URL.Path+" add handle func")
-	profile := Profile{"Alex", []string{"snowboarding", "programming"}}
+func searchHandler(w http.ResponseWriter, r *http.Request){
+	log.Println(r.URL.Path+" search handle func")
+	recipe := Recipe{1,"buffalo-chicken-stuffed-shells", "Dinner", "dummyurl", "keywords", 40, 2}
 
-  js, err := json.Marshal(profile)
+  js, err := json.Marshal(recipe)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
@@ -63,4 +70,11 @@ func addHandler(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
   w.Write(js)
 	log.Println("no error")
+}
+
+func addHandler(w http.ResponseWriter, r *http.Request){
+	log.Println(r.Method)
+	r.ParseForm()
+	fmt.Println(r.Form)
+	fmt.Println(r.FormValue("ID"))
 }
