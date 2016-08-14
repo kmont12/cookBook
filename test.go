@@ -1,21 +1,31 @@
 package main
 
 import (
-    "html"
+    "encoding/json"
     "log"
     "net/http"
+    "io/ioutil"
 )
 
-func main() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        if r.Method == "GET" {
-            log.Println(w, "GET, %q", html.EscapeString(r.URL.Path))
-        } else if r.Method == "POST" {
-            log.Println(w, "POST, %q", html.EscapeString(r.URL.Path))
-        } else {
-            log.Println(w, "Invalid request method.", 405)
-        }
-    })
+type test_struct struct {
+    Test string
+}
 
-    log.Fatal(http.ListenAndServe(":8080", nil))
+func test(rw http.ResponseWriter, req *http.Request) {
+    body, err := ioutil.ReadAll(req.Body)
+    if err != nil {
+        panic(err)
+    }
+    log.Println(string(body))
+    var t test_struct
+    err = json.Unmarshal(body, &t)
+    if err != nil {
+        panic(err)
+    }
+    log.Println(t.Test)
+}
+
+func main() {
+    http.HandleFunc("/test", test)
+    log.Fatal(http.ListenAndServe(":8082", nil))
 }

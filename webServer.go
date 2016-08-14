@@ -5,7 +5,6 @@ import ("net/http"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
-	"fmt"
 )
 type Recipe struct {
 	ID int
@@ -73,8 +72,15 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request){
-	log.Println(r.Method)
-	r.ParseForm()
-	fmt.Println(r.Form)
-	fmt.Println(r.FormValue("ID"))
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+			panic(err)
+	}
+	log.Println(string(body))
+	var t Recipe
+	err = json.Unmarshal(body, &t)
+	if err != nil {
+			panic(err)
+	}
+	log.Println(t.ID)
 }
