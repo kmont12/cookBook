@@ -4,7 +4,8 @@
 
 	<head>
 		<meta charset="utf-8"/>
-		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="http://localhost:8888/script.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css"/>
 		<title>My Cookbook</title>
 	</head>
@@ -54,50 +55,6 @@
 
 		<h3 id="clickTest" href="#clickTest">Intial Text</h3>
 
-
-
-		<script>
-		$(document).ready(function(){
-			$("#searchOptions").click(function(){
-				$("#search-options").toggle();
-			});
-
-			$("#addRecipeOptions").click(function(){
-				$("#add-recipe").toggle();
-			})
-
-			$("#search").click(function(){
-				$("#clickTest").text("click");
-				var path="http://localhost:8888/search";
-
-				var response;
-				$.getJSON( path, function(data) {
-					  	console.log( "success" );
-							response = data;
-							console.log(response);
-						});
-					});
-
-			$("#addRecipe").click(function(){
-				console.log("added");
-				addToDatabase('{"ID":1,"Name":"buffalo-chicken-stuffed-shells","Type":"Dinner","URL":"dummyurl"}')
-				console.log("after");
-			});
-		});
-
-
-		function addToDatabase(data){
-			$.ajax({
-					method: "post",
-					url: 'http://localhost:8080/',
-					data: data,
-					success: function(data, status) { console.log('status: ' + status); },
-					contentType: "application/json",
-			});
-		}
-
-			<!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
-		</script>
 
 
 
