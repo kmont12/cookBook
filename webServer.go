@@ -82,5 +82,5 @@ func addHandler(w http.ResponseWriter, r *http.Request){
 	if err != nil {
 			panic(err)
 	}
-	log.Println(t.ID)
+	log.Println(t.Name)
 }
