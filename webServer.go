@@ -5,16 +5,17 @@ import ("net/http"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
+	//"database/sql"
+	 //_ "github.com/go-sql-driver/mysql"
 )
 type Recipe struct {
-	ID int
-  Name string
-  Type string
-	URL string
-	keywords string
-	cooktime int
-	rating int
+  Type string	`json:"type,omitempty"`
+	URL string		`json:"url,omitempty"`
+	Keywords string	`json:"key,omitempty"`
+	Cooktime int	`json:"time,omitempty"`
+	Rating int	`json:"rate,omitempty"`
 }
+
 func main(){
 	http.HandleFunc("/",handler)
 	http.HandleFunc("/search/", searchHandler)
@@ -62,18 +63,19 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	if err !=nil{
 		panic(err)
 	}
-	log.Println(string(body) + "\t "+r.URL.Path[1:])
+	log.Println(body)
+	recipes:=make(map[string]Recipe)
 
+	recipes["buffalo-chicken-stuffed-shells"]=Recipe{"Dinner","dummyurl","chicken hot", 40, 3}
 
-	recipe := Recipe{1,"buffalo-chicken-stuffed-shells", "Dinner", "dummyurl", "keywords", 40, 2}
-
-  js, err := json.Marshal(recipe)
+  js, err := json.Marshal(recipes)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
 	}
 	w.Header().Set("Content-Type", "application/json")
   w.Write(js)
+	log.Println(recipes["buffalo-chicken-stuffed-shells"])
 	log.Println("no error")
 }
 
@@ -88,5 +90,5 @@ func addHandler(w http.ResponseWriter, r *http.Request){
 	if err != nil {
 			panic(err)
 	}
-	log.Println(t.Name)
+	log.Println(t.Type)
 }
