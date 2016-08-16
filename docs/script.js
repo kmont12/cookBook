@@ -10,14 +10,31 @@ $(document).ready(function(){
 
   $("#search").click(function(){
     $("#clickTest").text("click");
-    var path="/search/";
+    var dataPost="{"
 
-    var response;
-    $.getJSON( path, function(data) {
-          console.log( "success" );
-          response = data;
-          console.log(response);
-        });
+    if (document.getElementById('search_name').value != null && document.getElementById('search_name').value != ""){
+      dataPost=dataPost + '"Name" : "'+ document.getElementById('search_name').value+'",';
+    }
+
+    if (document.getElementById('search_type').value != "null" &&document.getElementById('search_type').value != ""){
+      dataPost=dataPost + '"Type" : "'+ document.getElementById('search_type').value+'",';
+    }
+
+    if (document.getElementById('search_key').value != null && document.getElementById('search_key').value != ""){
+      dataPost=dataPost + '"keywords" : "'+ document.getElementById('search_key').value+'",';
+    }
+
+    if (document.getElementById('search_rate').value != null && document.getElementById('search_rate').value != ""){
+      dataPost=dataPost + '"rating" : "'+ document.getElementById('search_rate').value+'",';
+    }
+
+    $.post("/search/",
+            dataPost,
+            function(data, status) {
+              $("#clickTest").text(status);
+              console.log(data)
+            }, "json"
+          );
       });
 
   $("#addRecipe").click(function(){
