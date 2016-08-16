@@ -1,11 +1,15 @@
 $(document).ready(function(){
-
+  var searchResults;
   $("#searchOptions").click(function(){
     $("#search-options").toggle();
+    $("#add-recipe").hide();
+    $("#list-results").empty();
   });
 
   $("#addRecipeOptions").click(function(){
     $("#add-recipe").toggle();
+    $("#search-options").hide();
+    $("#list-results").empty();
   })
 
   $("#search").click(function(){
@@ -33,6 +37,7 @@ $(document).ready(function(){
             function(data, status) {
               $("#clickTest").text(status);
               console.log(data)
+              makeList(data)
             }, "json"
           );
       });
@@ -74,6 +79,14 @@ $(document).ready(function(){
           );
     console.log(dataPost);
   });
+
+  function makeList(jsonData){
+    $("#search-options").hide();
+    $("#list-results").empty();
+    $.each(jsonData, function(key, value) {
+      $('#list-results').append('<li data-user="' + key + '">' + value.cooktime + '</li>');
+    });
+  }
 
 <!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
 });
