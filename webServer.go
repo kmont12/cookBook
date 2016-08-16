@@ -58,7 +58,13 @@ func handler(w http.ResponseWriter, r *http.Request){
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request){
-	log.Println(r.URL.Path+" search handle func")
+	body, err :=ioutil.ReadAll(r.Body)
+	if err !=nil{
+		panic(err)
+	}
+	log.Println(string(body) + "\t "+r.URL.Path[1:])
+
+
 	recipe := Recipe{1,"buffalo-chicken-stuffed-shells", "Dinner", "dummyurl", "keywords", 40, 2}
 
   js, err := json.Marshal(recipe)
