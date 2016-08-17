@@ -1,15 +1,17 @@
 $(document).ready(function(){
-  var searchResults;
+  var searchResults, website;
   $("#searchOptions").click(function(){
     $("#search-options").toggle();
     $("#add-recipe").hide();
     $("#list-results").empty();
+    $('#siteloader').hide();
   });
 
   $("#addRecipeOptions").click(function(){
     $("#add-recipe").toggle();
     $("#search-options").hide();
     $("#list-results").empty();
+    $('#siteloader').hide();
   })
 
   $("#search").click(function(){
@@ -83,10 +85,24 @@ $(document).ready(function(){
   function makeList(jsonData){
     $("#search-options").hide();
     $("#list-results").empty();
+    searchResults=jsonData;
     $.each(jsonData, function(key, value) {
-      $('#list-results').append('<li data-user="' + key + '">' + value.cooktime + '</li>');
+      $('#list-results').append('<li id="' + key + '">' + key + '</li>');
     });
   }
+
+  $("#list-results").click(function(){
+   var keys = $(this).find("li").attr("id");
+   $.each(searchResults, function(key, value){
+     if (keys == key){
+       website=value.url;
+     }
+     $("#siteloader").html('<object data="'+website+'"/>');
+     $('#siteloader').show();
+     $('#list-results').hide();
+   });
+   return false;
+  });
 
 <!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
 });
