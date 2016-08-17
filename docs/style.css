@@ -12,6 +12,10 @@ object {
     height: 800px;
 }
 
+ul {
+    list-style-position: inside;
+}
+
 #container{
 	text-align: center;
 }
