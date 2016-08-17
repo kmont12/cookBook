@@ -66,7 +66,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	log.Println(body)
 	recipes:=make(map[string]Recipe)
 
-	recipes["buffalo-chicken-stuffed-shells"]=Recipe{"Dinner","dummyurl","chicken hot", 40, 3}
+	recipes["Buffalo Chicken"]=Recipe{"Dinner","http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/","chicken hot", 40, 3}
 
   js, err := json.Marshal(recipes)
   if err != nil {
