@@ -5,8 +5,9 @@ import ("net/http"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
-	//"database/sql"
-	 //_ "github.com/go-sql-driver/mysql"
+	"strconv"
+	"database/sql"
+		_ "github.com/go-sql-driver/mysql"
 )
 type Recipe struct {
   Type string	`json:"type,omitempty"`
@@ -16,6 +17,14 @@ type Recipe struct {
 	Rating int	`json:"rate,omitempty"`
 }
 
+type Search struct{
+	Name string
+	Type string
+	URL string
+	Keywords string
+	Cooktime int
+	Rating int
+}
 func main(){
 	http.HandleFunc("/",handler)
 	http.HandleFunc("/search/", searchHandler)
@@ -84,11 +93,59 @@ func addHandler(w http.ResponseWriter, r *http.Request){
 	if err != nil {
 			panic(err)
 	}
-	log.Println(string(body))
-	var t Recipe
-	err = json.Unmarshal(body, &t)
-	if err != nil {
-			panic(err)
+	var s Search
+	json.Unmarshal(body, &s)
+	insert:="Insert INTO recipes (id, name, type, url, keywords, cooktime, rating) VALUES (NULL,"
+	if (s.Name!=""){
+		insert=insert+"'"+s.Name+"',"
+	} else{
+		insert=insert+"NULL,"
 	}
-	log.Println(t.Type)
+
+	if (s.Type!=""){
+		insert=insert+"'"+s.Type+"',"
+	}	else{
+		insert=insert+"NULL,"
+	}
+
+	if (s.URL!=""){
+		insert=insert+"'"+s.URL+"',"
+	}	else{
+		insert=insert+"NULL,"
+	}
+
+	if (s.Keywords!=""){
+		insert=insert+"'"+s.Keywords+"',"
+	}	else{
+		insert=insert+"NULL,"
+	}
+
+	if (strconv.Itoa(s.Cooktime)!="0"){
+		insert=insert+"'"+strconv.Itoa(s.Cooktime)+"',"
+	}	else{
+		insert=insert+"NULL,"
+	}
+
+	if (strconv.Itoa(s.Rating)!="0"){
+		insert=insert+"'"+strconv.Itoa(s.Rating)+"');"
+	}	else{
+		insert=insert+"NULL);"
+	}
+	log.Println(insert)
+	insertDB(insert)
+}
+
+func insertDB(insert string){
+	log.Println("insertDB called")
+	db, err := sql.Open("mysql", "root:password@/cookbook")
+	if err != nil {
+    panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+	}
+
+	rows, err := db.Query(insert)
+	if err !=nil{
+		panic(err.Error())
+	}
+	log.Println(rows)
+	defer db.Close()
 }
