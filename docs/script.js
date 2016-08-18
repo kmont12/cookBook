@@ -27,11 +27,11 @@ $(document).ready(function(){
     }
 
     if (document.getElementById('search_key').value != null && document.getElementById('search_key').value != ""){
-      dataPost=dataPost + '"keywords" : "'+ document.getElementById('search_key').value+'",';
+      dataPost=dataPost + '"Keywords" : "'+ document.getElementById('search_key').value+'",';
     }
 
     if (document.getElementById('search_rate').value != null && document.getElementById('search_rate').value != ""){
-      dataPost=dataPost + '"rating" : "'+ document.getElementById('search_rate').value+'",';
+      dataPost=dataPost + '"Rating" : "'+ document.getElementById('search_rate').value+'",';
     }
 
     $.post("/search/",
@@ -59,15 +59,15 @@ $(document).ready(function(){
     }
 
     if (document.getElementById('add_time').value != null && document.getElementById('add_time').value != ""){
-      dataPost=dataPost + '"cooktime" : "'+ document.getElementById('add_time').value+'",';
+      dataPost=dataPost + '"Cooktime" : '+ document.getElementById('add_time').value+',';
     }
 
     if (document.getElementById('add_key').value != null && document.getElementById('add_key').value != ""){
-      dataPost=dataPost + '"keywords" : "'+ document.getElementById('add_key').value+'",';
+      dataPost=dataPost + '"Keywords" : "'+ document.getElementById('add_key').value+'",';
     }
 
     if (document.getElementById('add_rate').value != null && document.getElementById('add_rate').value != ""){
-      dataPost=dataPost + '"rating" : "'+ document.getElementById('add_rate').value+'",';
+      dataPost=dataPost + '"Rating" : '+ document.getElementById('add_rate').value+',';
     }
 
     console.log(dataPost);
@@ -85,6 +85,7 @@ $(document).ready(function(){
   function makeList(jsonData){
     $("#search-options").hide();
     $("#list-results").empty();
+    $("#list-results").show();
     searchResults=jsonData;
     $.each(jsonData, function(key, value) {
       $('#list-results').append('<li id="' + key + '">' + key + '</li>');
@@ -103,6 +104,4 @@ $(document).ready(function(){
    });
    return false;
   });
-
-<!--$("#siteloader").html('<object data="http://allrecipes.com/recipe/234592/buffalo-chicken-stuffed-shells/"/>');-->
 });
