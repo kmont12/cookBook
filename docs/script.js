@@ -34,6 +34,9 @@ $(document).ready(function(){
       dataPost=dataPost + '"Rating" : "'+ document.getElementById('search_rate').value+'",';
     }
 
+    dataPost=dataPost.slice(0,-1);
+    dataPost=dataPost+'}';
+    console.log(dataPost);
     $.post("/search/",
             dataPost,
             function(data, status) {
