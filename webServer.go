@@ -8,6 +8,7 @@ import ("net/http"
 	"strconv"
 	"database/sql"
 		_ "github.com/go-sql-driver/mysql"
+	//"github.com/antoan-angelov/go-fuzzy"
 )
 type Recipe struct {
   Type string	`json:"type,omitempty"`
@@ -40,7 +41,6 @@ func handler(w http.ResponseWriter, r *http.Request){
 
 	 data, err := ioutil.ReadFile("docs/"+string(path))
 
-	log.Println(path+ " handle func")
 	if err==nil{
 		var contentType string
 		if strings.HasSuffix(path, ".css"){
@@ -75,48 +75,26 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	var s Search
 	json.Unmarshal(body, &s)
 
-	log.Println(s.Rating)
+	sqlState:="Select name, type, url, keywords, cooktime, rating from recipes; "
 
-	sqlState:="Select * from recipes where "
-	noArgs:=true
+	sqlResult:=searchDB(sqlState)
 
-	if (s.Name!=""){
-		sqlState=sqlState+"name='"+s.Name+"' and "
-		noArgs=false
+	recipeMap:=make(map[string]Recipe)
+	for sqlResult.Next(){
+		var r Recipe
+		var name string
+		sqlResult.Scan(&name, &r.Type, &r.URL, &r.Keywords, &r.Cooktime, &r.Rating)
+		recipeMap[name]=r
+		//log.Println("Recipe ", name,  " added to map", )
 	}
 
-	if (s.Type!=""){
-		sqlState=sqlState+"type='"+s.Type+"' and "
-		noArgs=false
-	}
-
-	if (s.Keywords!=""){
-		sqlState=sqlState+"keywords='"+s.Keywords+"' and "
-		noArgs=false
-	}
-
-	if (strconv.Itoa(s.Rating)!="0"){
-		sqlState=sqlState+" rating='"+strconv.Itoa(s.Rating)+"' and "
-		noArgs=false
-	}
-
-	if(noArgs){
-		sqlState=sqlState[:len(sqlState)-7]+";"
-	} else{
-		sqlState=sqlState[:len(sqlState)-5]+";"
-	}
-
-
-	recipes:=searchDB(sqlState)
-
-  js, err := json.Marshal(recipes)
+  js, err := json.Marshal(recipeMap)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
 	}
 	w.Header().Set("Content-Type", "application/json")
   w.Write(js)
-	log.Println(s.Name)
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request){
