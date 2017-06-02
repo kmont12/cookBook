@@ -75,7 +75,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	var s Search
 	json.Unmarshal(body, &s)
 
-	sqlState:="Select name, type, url, keywords, cooktime, rating from recipes; "
+	sqlState:="Select name, type, url, cooktime, rating from recipes; "
 
 	sqlResult:=searchDB(sqlState)
 
@@ -83,7 +83,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	for sqlResult.Next(){
 		var r Recipe
 		var name string
-		sqlResult.Scan(&name, &r.Type, &r.URL, &r.Keywords, &r.Cooktime, &r.Rating)
+		sqlResult.Scan(&name, &r.Type, &r.URL, &r.Cooktime, &r.Rating)
 		recipeMap[name]=r
 		//log.Println("Recipe ", name,  " added to map", )
 	}

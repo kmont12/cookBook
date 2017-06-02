@@ -40,9 +40,8 @@ $(document).ready(function(){
     $.post("/search/",
             dataPost,
             function(data, status) {
-              $("#clickTest").text(status);
-              console.log(data)
-              makeList(data)
+              console.log(data);
+              makeList(data);
             }, "json"
           );
       });
@@ -91,20 +90,24 @@ $(document).ready(function(){
     $("#list-results").show();
     searchResults=jsonData;
     $.each(jsonData, function(key, value) {
-      $('#list-results').append('<li id="' + key + '">' + key + '</li>');
+      $('#list-results').append('<li id="' + key + '" onClick="listClickListener(\''+key+'\')">' + key + '</li>');
+      document.getElementById(key).addEventListener("click", function(){listClickListener(key);}, false);
     });
   }
 
-  $("#list-results").click(function(){
-   var keys = $(this).find("li").attr("id");
+
+  function listClickListener(id){
+   console.log(id);
    $.each(searchResults, function(key, value){
-     if (keys == key){
+     if (id == key){
        website=value.url;
+       //console.log(website);
      }
      $("#siteloader").html('<object data="'+website+'"/>');
      $('#siteloader').show();
      $('#list-results').hide();
    });
    return false;
-  });
+  }
+
 });
