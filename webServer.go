@@ -2,15 +2,17 @@ package main
 
 import ("net/http"
 	"log"
+	//"reflect"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
-	"strconv"
+	//"strconv"
 	"database/sql"
 		_ "github.com/go-sql-driver/mysql"
-	//"github.com/antoan-angelov/go-fuzzy"
+	"github.com/antoan-angelov/go-fuzzy"
 )
 type Recipe struct {
+	Name string `json:"name,omitempty"`
   Type string	`json:"type,omitempty"`
 	URL string		`json:"url,omitempty"`
 	Keywords string	`json:"key,omitempty"`
@@ -23,8 +25,8 @@ type Search struct{
 	Type string
 	URL string
 	Keywords string
-	Cooktime int
-	Rating int
+	Cooktime string
+	Rating string
 }
 func main(){
 	http.HandleFunc("/",handler)
@@ -75,17 +77,39 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	var s Search
 	json.Unmarshal(body, &s)
 
-	sqlState:="Select name, type, url, cooktime, rating from recipes; "
+	sqlState:="Select name, type, url, cooktime, rating from recipes"
+	if (s.Type != "" || s.Rating !="" || s.Cooktime !="") {
+		sqlState=sqlState+ " where"
+	}
+	if s.Type != "" {
+		sqlState=sqlState+ " type = '" +s.Type+"'"
+	}
+	if s.Rating != "" {
+		sqlState=sqlState + " rating = "+s.Rating
+	}
+	if s.Cooktime !="" {
+		sqlState = sqlState + " cooktime < "+s.Cooktime
+	}
 
+	sqlState +=";"
+
+	//log.Println(sqlState)
 	sqlResult:=searchDB(sqlState)
 
 	recipeMap:=make(map[string]Recipe)
 	for sqlResult.Next(){
 		var r Recipe
-		var name string
-		sqlResult.Scan(&name, &r.Type, &r.URL, &r.Cooktime, &r.Rating)
-		recipeMap[name]=r
-		//log.Println("Recipe ", name,  " added to map", )
+		//var name string
+		sqlResult.Scan(&r.Name, &r.Type, &r.URL, &r.Cooktime, &r.Rating)
+		recipeMap[r.Name]=r
+		//log.Println("Recipe ", r.Name,  " added to map" )
+	}
+
+	if (s.Name != ""){
+		recipeMap=searchMap(recipeMap, "Name", s.Name)
+	}
+	if (s.Keywords != ""){
+		recipeMap=searchMap(recipeMap, "Keywords", s.Keywords)
 	}
 
   js, err := json.Marshal(recipeMap)
@@ -129,14 +153,14 @@ func addHandler(w http.ResponseWriter, r *http.Request){
 		insert=insert+"NULL,"
 	}
 
-	if (strconv.Itoa(s.Cooktime)!="0"){
-		insert=insert+"'"+strconv.Itoa(s.Cooktime)+"',"
+	if (s.Cooktime!=""){
+		insert=insert+"'"+s.Cooktime+"',"
 	}	else{
 		insert=insert+"NULL,"
 	}
 
-	if (strconv.Itoa(s.Rating)!="0"){
-		insert=insert+"'"+strconv.Itoa(s.Rating)+"');"
+	if (s.Rating!=""){
+		insert=insert+"'"+s.Rating+"');"
 	}	else{
 		insert=insert+"NULL);"
 	}
@@ -159,7 +183,7 @@ func insertDB(insert string){
 }
 
 func searchDB(sel string) *sql.Rows{
-	log.Println("select called")
+	//log.Println("select called")
 	db, err := sql.Open("mysql", "root:password@/cookbook")
 	if err != nil {
     panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
@@ -172,4 +196,40 @@ func searchDB(sel string) *sql.Rows{
 	defer db.Close()
 
 	return rows
+}
+
+func searchMap(recipeMap map[string]Recipe, searchType string, searchTerm string) map[string]Recipe{
+	fuzzySearcher := fuzzy.NewFuzzy()
+
+	//v :=reflect.ValueOf(recipeMap)
+	newInt :=make([]interface{}, len(recipeMap))
+
+	index := 0
+	for key :=range recipeMap{
+		//log.Println(key)
+		newInt[index]=recipeMap[key]
+		index+=1
+	}
+
+	fuzzySearcher.SetThreshold(10)
+	fuzzySearcher.Set(&newInt)
+	fuzzySearcher.SetKeys([]string{searchType})
+
+	results, err := fuzzySearcher.Search(searchTerm)
+
+	if err != nil {
+		log.Println("Search Failure")
+	}
+
+	resultMap := make(map[string]Recipe)
+	for key := range results{
+		recipe, ok := results[key].(Recipe)
+		if !ok{
+			log.Println("Type Assertion Failure")
+		}
+		resultMap[recipe.Name]=recipe
+		log.Println("In the result map: ", recipe.Name)
+	}
+
+	return resultMap
 }

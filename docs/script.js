@@ -33,10 +33,13 @@ $(document).ready(function(){
     if (document.getElementById('search_rate').value != null && document.getElementById('search_rate').value != ""){
       dataPost=dataPost + '"Rating" : "'+ document.getElementById('search_rate').value+'",';
     }
+    if (document.getElementById('search_cook').value != null && document.getElementById('search_cook').value != ""){
+      dataPost=dataPost + '"Cooktime" : "'+ document.getElementById('search_cook').value+'",';
+    }
 
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
-    console.log(dataPost);
+//    console.log(dataPost);
     $.post("/search/",
             dataPost,
             function(data, status) {
