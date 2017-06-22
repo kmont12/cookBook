@@ -1,12 +1,12 @@
 package main
 
-import ("net/http"
+import (
+	"net/http"
 	"log"
 	//"reflect"
 	"io/ioutil"
 	"strings"
 	"encoding/json"
-	//"strconv"
 	"database/sql"
 		_ "github.com/go-sql-driver/mysql"
 	"github.com/antoan-angelov/go-fuzzy"
@@ -77,7 +77,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	var s Search
 	json.Unmarshal(body, &s)
 
-	sqlState:="Select name, type, url, cooktime, rating from recipes"
+	sqlState:="Select name, type, url, cooktime, keywords, rating from recipes"
 	if (s.Type != "" || s.Rating !="" || s.Cooktime !="") {
 		sqlState=sqlState+ " where"
 	}
@@ -100,16 +100,19 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 	for sqlResult.Next(){
 		var r Recipe
 		//var name string
-		sqlResult.Scan(&r.Name, &r.Type, &r.URL, &r.Cooktime, &r.Rating)
+		sqlResult.Scan(&r.Name, &r.Type, &r.URL, &r.Cooktime, &r.Keywords, &r.Rating)
 		recipeMap[r.Name]=r
 		//log.Println("Recipe ", r.Name,  " added to map" )
 	}
 
 	if (s.Name != ""){
-		recipeMap=searchMap(recipeMap, "Name", s.Name)
+		recipeMap=fuzzySearch(recipeMap, "Name", s.Name)
 	}
 	if (s.Keywords != ""){
-		recipeMap=searchMap(recipeMap, "Keywords", s.Keywords)
+		keyStrip :=strings.Split(s.Keywords, ",")
+		for _, value := range keyStrip{
+				recipeMap=subStringSearch(recipeMap, "Keywords", value)
+			}
 	}
 
   js, err := json.Marshal(recipeMap)
@@ -198,10 +201,9 @@ func searchDB(sel string) *sql.Rows{
 	return rows
 }
 
-func searchMap(recipeMap map[string]Recipe, searchType string, searchTerm string) map[string]Recipe{
+func fuzzySearch(recipeMap map[string]Recipe, searchType string, searchTerm string) map[string]Recipe{
 	fuzzySearcher := fuzzy.NewFuzzy()
 
-	//v :=reflect.ValueOf(recipeMap)
 	newInt :=make([]interface{}, len(recipeMap))
 
 	index := 0
@@ -211,7 +213,6 @@ func searchMap(recipeMap map[string]Recipe, searchType string, searchTerm string
 		index+=1
 	}
 
-	fuzzySearcher.SetThreshold(10)
 	fuzzySearcher.Set(&newInt)
 	fuzzySearcher.SetKeys([]string{searchType})
 
@@ -232,4 +233,17 @@ func searchMap(recipeMap map[string]Recipe, searchType string, searchTerm string
 	}
 
 	return resultMap
+}
+
+func subStringSearch(recipeMap map[string]Recipe, searchType string, searchTerm string) map[string]Recipe{
+	newMap :=make(map[string]Recipe)
+	for _, value := range recipeMap{
+		if (searchType == "Keywords"){
+			if(strings.Contains(value.Keywords, strings.TrimSpace(searchTerm))){
+				newMap[value.Name]=value
+			}
+		}
+	}
+
+	return newMap
 }
