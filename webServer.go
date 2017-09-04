@@ -8,6 +8,7 @@ import (
 	"strings"
 	"encoding/json"
 	"database/sql"
+	"os"
 		_ "github.com/go-sql-driver/mysql"
 	"github.com/antoan-angelov/go-fuzzy"
 )
@@ -115,6 +116,14 @@ func searchHandler(w http.ResponseWriter, r *http.Request){
 			}
 	}
 
+	if (len(recipeMap) ==0 ){
+		var r Recipe
+
+		r.Name = "No recipes found ....."
+		r.URL, _ = os.Hostname()
+		r.URL = r.URL + "/err"
+		recipeMap[r.Name] = r
+	}
   js, err := json.Marshal(recipeMap)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -224,12 +233,13 @@ func fuzzySearch(recipeMap map[string]Recipe, searchType string, searchTerm stri
 
 	resultMap := make(map[string]Recipe)
 	for key := range results{
+		log.Println(key)
 		recipe, ok := results[key].(Recipe)
 		if !ok{
 			log.Println("Type Assertion Failure")
 		}
 		resultMap[recipe.Name]=recipe
-		log.Println("In the result map: ", recipe.Name)
+		//log.Println("In the result map: ", recipe.Name)
 	}
 
 	return resultMap
