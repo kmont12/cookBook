@@ -2,12 +2,14 @@ package main
 
 import (
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 )
 
 func main() {
 	router := NewRouter()
+	router.PathPrefix("/").HandlerFunc(IndexHandler)
 	http.ListenAndServe(":8888", router)
 }
 
@@ -16,6 +18,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if path == "" {
 		path = "index.html"
 	}
+	log.Println(path)
 
 	data, err := ioutil.ReadFile("docs/" + string(path))
 

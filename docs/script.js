@@ -40,7 +40,7 @@ $(document).ready(function(){
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
 //    console.log(dataPost);
-    $.post("/recipe/search/",
+    $.get("/recipe/search/",
             dataPost,
             function(data, status) {
               console.log(data);
