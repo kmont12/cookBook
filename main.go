@@ -10,18 +10,18 @@ import (
 
 func main() {
 	router := NewRouter()
-	router.PathPrefix("/").HandlerFunc(IndexHandler)
+	router.PathPrefix("/docs").HandlerFunc(IndexHandler)
 	log.Fatal(http.ListenAndServe(":8888", router))
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path[1:]
 	if path == "" {
-		path = "index.html"
+		path = "docs/index.html"
 	}
 	log.Println(path)
 
-	data, err := ioutil.ReadFile("docs/" + string(path))
+	data, err := ioutil.ReadFile(string(path))
 
 	if err == nil {
 		var contentType string

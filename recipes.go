@@ -59,7 +59,6 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	recipeMap := make(map[string]Recipe)
 	for sqlResult.Next() {
 		var r Recipe
-		//var name string
 		sqlResult.Scan(&r.Name, &r.Type, &r.URL, &r.Cooktime, &r.Keywords, &r.Rating)
 		recipeMap[r.Name] = r
 		//log.Println("Recipe ", r.Name,  " added to map" )
@@ -85,6 +84,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	js, err := json.Marshal(recipeMap)
 	if err != nil {
+		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
