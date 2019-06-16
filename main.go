@@ -11,7 +11,7 @@ import (
 func main() {
 	router := NewRouter()
 	router.PathPrefix("/").HandlerFunc(IndexHandler)
-	http.ListenAndServe(":8888", router)
+	log.Fatal(http.ListenAndServe(":8888", router))
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
