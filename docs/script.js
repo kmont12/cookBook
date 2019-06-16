@@ -40,7 +40,7 @@ $(document).ready(function(){
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
 //    console.log(dataPost);
-    $.post("/search/",
+    $.post("/recipe/search/",
             dataPost,
             function(data, status) {
               console.log(data);
@@ -78,7 +78,7 @@ $(document).ready(function(){
     console.log(dataPost);
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
-    $.post("/add/",
+    $.post("/recipe/add/",
             dataPost,
             function(data, status) {
               $("#clickTest").text(status);
