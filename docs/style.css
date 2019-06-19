@@ -10,7 +10,7 @@ html{
 
 object {
     width: 95%;
-    height: 800px;
+    height: 200px;
 }
 
 ul {
@@ -33,13 +33,55 @@ ul {
 	display:none;
 }
 
-.float-right-area {
-	background-color: gray;
-	display: none;
-	width: 30%;
-	margin-bottom: -5000px; /* any large number will do */
-	padding-bottom: 5000px;
-	align-content: right;
-	float: right;
-	overflow: hidden;
-}
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	background-color: #111;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+  }
+  .sidebar .closebtn {
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
+  }
+
+  .sidebar a {
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
+  }
+  
+  .sidebar a:hover {
+	color: #f1f1f1;
+  }
+
+  .openbtn {
+	font-size: 20px;
+	cursor: pointer;
+	background-color: #111;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	right: 0;
+	position: fixed;
+  }
+  
+  .openbtn:hover {
+	background-color: #444;
+  }
+
+  #main {
+	transition: margin-left .5s;
+	padding: 16px;
+  }

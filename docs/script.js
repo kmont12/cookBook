@@ -15,7 +15,6 @@ $(document).ready(function(){
   })
 
   $("#search").click(function(){
-    $("#clickTest").text("click");
     var dataPost="{"
 
     if (document.getElementById('search_name').value != null && document.getElementById('search_name').value != ""){
@@ -114,3 +113,13 @@ $(document).ready(function(){
   }
 
 });
+
+function openNoteSidebar() {
+  document.getElementById("noteSidebar").style.width = "30%";
+  document.getElementById("main").style.marginRight = "30%";
+}
+
+function closeNoteSidebar() {
+  document.getElementById("noteSidebar").style.width = "0";
+  document.getElementById("main").style.marginRight = "0";
+}

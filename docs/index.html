@@ -10,65 +10,67 @@
 		<title>My Cookbook</title>
 	</head>
 	<body>
+		<div id="main">		
+			<button id="openbtn" class="openbtn" onclick="openNoteSidebar()">☰ Notes</button>
+			<h1 id="heading" class=center>Cook Book</h1>
 
-		<h1 class=center>Cook Book</h1>
-
-		<div id="container">
-			<button type="button" id="searchOptions">Search Options</button>
-			<button type="button" id="addRecipeOptions">Add Recipe Options</button>
-		</div>
-		<br>
-
-
-		<div id="search-options" class=center href="#search-options">
+			<div id="container">
+				<button type="button" id="searchOptions">Search Options</button>
+				<button type="button" id="addRecipeOptions">Add Recipe Options</button>
+			</div>
 			<br>
-			Name: <input type="text" name="name" id="search_name">    Keywords: <input type="text" name="keyword" id="search_key"><br><br>
-			Max Cooktime: <input type="text" name="cooktime" id = "search_cook">
-			Type: <select name="type" id="search_type">
-					<option value="null"></option>
-					<option value="Breakfast">Breakfast</option>
-					<option value="Snack">Snack</option>
-					<option value="Meal">Meal</option>
-					<option value="Apps">Appetizer</option>
-					<option value="Dessert">Dessert</option>
-					<option value="Other">Other</option>
-				</select>
-			Rating: <select name="Rating" id="search_rate">
-					<option name="null" ></option>
-					<option name="1" value=1>1</option>
-					<option name="2" value=2>2</option>
-					<option name="3" value=3>3</option>
-					<option name="4" value=4>4</option>
-					<option name="5" value=5>5</option>
-				</select>
-					<br><br>
-			<button type="button" id="search" href="#search">Search</button>
+	
+	
+			<div id="search-options" class=center href="#search-options">
+				<br>
+				Name: <input type="text" name="name" id="search_name">    Keywords: <input type="text" name="keyword" id="search_key"><br><br>
+				Max Cooktime: <input type="text" name="cooktime" id = "search_cook">
+				Type: <select name="type" id="search_type">
+						<option value="null"></option>
+						<option value="Breakfast">Breakfast</option>
+						<option value="Snack">Snack</option>
+						<option value="Meal">Meal</option>
+						<option value="Apps">Appetizer</option>
+						<option value="Dessert">Dessert</option>
+						<option value="Other">Other</option>
+					</select>
+				Rating: <select name="Rating" id="search_rate">
+						<option name="null" ></option>
+						<option name="1" value=1>1</option>
+						<option name="2" value=2>2</option>
+						<option name="3" value=3>3</option>
+						<option name="4" value=4>4</option>
+						<option name="5" value=5>5</option>
+					</select>
+						<br><br>
+				<button type="button" id="search" href="#search">Search</button>
+			</div>
+	
+			<div id="add-recipe" class=center href="#add-recipe">
+				<br>
+				URL: <input type="text" name="url" id="add_url"> <button type="button" id="aPopulate">Auto Populate</button><br><br>
+				Name: <input type="text" name="name" id = "add_name"> Keywords: <input type="text" name="keywords" id="add_key"><br>
+				Cook Time: <input type="text" name="cookTime" id="add_time"> minutes Ratings: <input type="text" name="ratings" id="add_rate"><br><br>
+				type:<select name="type" id="add_type">
+						<option value="null"></option>
+						<option value="Breakfast">Breakfast</option>
+						<option value="Snack">Snack</option>
+						<option value="Meal">Meal</option>
+						<option value="Apps">Appetizer</option>
+						<option value="Dessert">Dessert</option>
+						<option value="Other">Other</option>
+					</select><br><br>
+				<button type="button" id="addRecipe" href="#addRecipe">Add Recipe</button>
+			</div>
+	
+			<ul id=list-results class=center></ul>
+	
+			<div id="siteloader" href="#siteloader"></div>
 		</div>
 
-		<div id="add-recipe" class=center href="#add-recipe">
-			<br>
-			URL: <input type="text" name="url" id="add_url"> <button type="button" id="aPopulate">Auto Populate</button><br><br>
-			Name: <input type="text" name="name" id = "add_name"> Keywords: <input type="text" name="keywords" id="add_key"><br>
-			Cook Time: <input type="text" name="cookTime" id="add_time"> minutes Ratings: <input type="text" name="ratings" id="add_rate"><br><br>
-			type:<select name="type" id="add_type">
-					<option value="null"></option>
-					<option value="Breakfast">Breakfast</option>
-					<option value="Snack">Snack</option>
-					<option value="Meal">Meal</option>
-					<option value="Apps">Appetizer</option>
-					<option value="Dessert">Dessert</option>
-					<option value="Other">Other</option>
-				</select><br><br>
-			<button type="button" id="addRecipe" href="#addRecipe">Add Recipe</button>
-		</div>
-
-		<ul id=list-results class=center></ul>
-
-		<div id="siteloader" href="#siteloader"></div>
-
-		<div class="float-right-area">
-		
-			Right content. Add your images or sidebar text to this side.
+		<div class="sidebar" id="noteSidebar">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNoteSidebar()">x</a>
+			<a href="#">No selected recipe</a>
 		
 		</div>
 
