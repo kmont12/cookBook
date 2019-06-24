@@ -44,29 +44,42 @@ ul {
 	overflow-x: hidden;
 	transition: 0.5s;
 	padding-top: 60px;
-  }
-  .sidebar .closebtn {
+}
+.sidebar .closebtn {
 	position: absolute;
 	top: 0;
 	right: 25px;
 	font-size: 36px;
 	margin-left: 50px;
-  }
+}
 
-  .sidebar a {
+.sidebar a {
 	padding: 8px 8px 8px 32px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #818181;
 	display: block;
 	transition: 0.3s;
-  }
+}
   
-  .sidebar a:hover {
+.sidebar a:hover {
 	color: #f1f1f1;
-  }
+}
 
-  .openbtn {
+.boxlist {
+	color: green;
+	list-style-position: inside;
+	padding: 16px 16px;
+	border: 2px solid white;
+	margin: 2px;
+	word-wrap: break-word;
+}
+
+.sidebar .boxlist:hover {
+	color: #f1f1f1;
+}
+
+.openbtn {
 	font-size: 20px;
 	cursor: pointer;
 	background-color: #111;
@@ -75,13 +88,13 @@ ul {
 	border: none;
 	right: 0;
 	position: fixed;
-  }
+}
   
-  .openbtn:hover {
+.openbtn:hover {
 	background-color: #444;
-  }
+}
 
-  #main {
+#main {
 	transition: margin-left .5s;
 	padding: 16px;
-  }
+}

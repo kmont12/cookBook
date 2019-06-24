@@ -1,3 +1,4 @@
+var currentRecipeID;
 $(document).ready(function(){
   var searchResults, website;
   $("#searchOptions").click(function(){
@@ -92,7 +93,7 @@ $(document).ready(function(){
     $("#list-results").show();
     searchResults=jsonData;
     $.each(jsonData, function(key, value) {
-      $('#list-results').append('<li id="' + key + '" onClick="listClickListener(\''+key+'\')">' + key + '</li>');
+      $('#list-results').append('<li id="' + key + '" onClick="listClickListener(this.id)">' + key + '</li>');
       document.getElementById(key).addEventListener("click", function(){listClickListener(key);}, false);
     });
   }
@@ -103,6 +104,7 @@ $(document).ready(function(){
    $.each(searchResults, function(key, value){
      if (id == key){
        website=value.url;
+       currentRecipeID = value.id
        //console.log(website);
      }
      $("#siteloader").html('<object data="'+website+'"/>');
@@ -119,7 +121,19 @@ function openNoteSidebar() {
   document.getElementById("main").style.marginRight = "30%";
 }
 
+function makeNotesList(data) {
+  $.each(jsonData, function(key, value) {
+    $('#notesList').append('<li id="' + key + '" dblclick="listClickListener(this.id)">' + key + '</li>');
+    document.getElementById(key).addEventListener("click", function(){listClickListener(key);}, false);
+  });
+}
+
 function closeNoteSidebar() {
   document.getElementById("noteSidebar").style.width = "0";
   document.getElementById("main").style.marginRight = "0";
+}
+
+function prepareForDeletion(id) {
+  console.log("Deleting Note " + id )
+  document.getElementById(id).style.display = 'none';
 }

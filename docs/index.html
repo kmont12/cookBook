@@ -69,8 +69,13 @@
 		</div>
 
 		<div class="sidebar" id="noteSidebar">
+			<div class="center">Notes</div>
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNoteSidebar()">x</a>
-			<a href="#">No selected recipe</a>
+			<boxlist id="noteslist" href="#">
+				<li class="boxlist" id="1" ondblclick="prepareForDeletion(this.id)">No selected recipe</li>
+				<li class="boxlist" id="2" ondblclick="prepareForDeletion(this.id)">This is a really long note that would need to wrap around to fit in the sidebar. GAAAAAAAAAAHHHHHHHHH</li>
+				<li class="boxlist" id="3" ondblclick="prepareForDeletion(this.id)"></li>
+			</boxlist>
 		
 		</div>
 
