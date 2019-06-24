@@ -32,20 +32,26 @@ var routes = Routes{
 	},
 	Route{
 		"UpdateRecipe",
-		"GET",
-		"/recipe/search",
+		"POST",
+		"/recipe/update",
 		SearchHandler,
 	},
 	Route{
 		"AddNotes",
 		"POST",
-		"/notes/add",
+		"/notes",
 		AddNotesHandler,
 	},
 	Route{
 		"GetNotes",
-		"POST",
-		"/notes/add",
+		"GET",
+		"/notes",
 		GetNotesHandler,
+	},
+	Route{
+		"DeleteNotes",
+		"DELETE",
+		"/notes",
+		DeleteNotesHandler,
 	},
 }

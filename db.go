@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"log"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -9,7 +11,8 @@ func InsertDB(insert string) {
 	//log.Println("insert called")
 	db, err := sql.Open("mysql", "root:password@/cookbook")
 	if err != nil {
-		panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+		log.Println(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+		return
 	}
 
 	_, err2 := db.Query(insert)
@@ -23,7 +26,8 @@ func SearchDB(sel string) *sql.Rows {
 	//log.Println("select called")
 	db, err := sql.Open("mysql", "root:password@/cookbook")
 	if err != nil {
-		panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+		log.Println(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+		return nil
 	}
 
 	rows, err := db.Query(sel)
