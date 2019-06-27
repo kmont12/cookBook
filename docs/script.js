@@ -93,7 +93,7 @@ $(document).ready(function(){
     $("#list-results").show();
     searchResults=jsonData;
     $.each(jsonData, function(key, value) {
-      $('#list-results').append('<li id="' + key + '" onClick="listClickListener(this.id)">' + key + '</li>');
+      $('#list-results').append('<li id="' + key + '">' + key + '</li>');
       document.getElementById(key).addEventListener("click", function(){listClickListener(key);}, false);
     });
   }
@@ -119,12 +119,22 @@ $(document).ready(function(){
 function openNoteSidebar() {
   document.getElementById("noteSidebar").style.width = "30%";
   document.getElementById("main").style.marginRight = "30%";
+  if (currentRecipeID != null) {
+    $.get("/notes/",
+    currentRecipeID,
+    function(data, status) {
+      console.log(data);
+      makeNotesList(data);
+    }, "json");
+  } else {
+    $('#notesList').append('<li class="boxlist" id="no-id"">No recipe currently selected</li>');
+  }
 }
 
 function makeNotesList(data) {
   $.each(jsonData, function(key, value) {
-    $('#notesList').append('<li id="' + key + '" dblclick="listClickListener(this.id)">' + key + '</li>');
-    document.getElementById(key).addEventListener("click", function(){listClickListener(key);}, false);
+    $('#notesList').append('<li id="' + value.id + '">' + value.message + '</li>');
+    document.getElementById(value.id).addEventListener("dblclick", function(){prepareForDeletion(key);}, false);
   });
 }
 
