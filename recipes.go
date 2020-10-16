@@ -94,6 +94,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Add handler invoked")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)

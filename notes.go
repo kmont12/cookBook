@@ -34,7 +34,7 @@ func GetNotesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	var recipeID string
 	json.Unmarshal(body, &recipeID)
-	sqlStatement := fmt.Sprintf("SELECT ID, Message, RecipeID from notes where RecipeID == %s ORDER BY Timestamp DESC", recipeID)
+	sqlStatement := fmt.Sprintf("SELECT ID, Message, RecipeID, Timestamp from notes where RecipeID == %s ORDER BY Timestamp DESC", recipeID)
 	sqlResult := SearchDB(sqlStatement)
 	notesMap := make(map[string]Note)
 	for sqlResult.Next() {
@@ -55,5 +55,10 @@ func GetNotesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteNotesHandler(w http.ResponseWriter, r *http.Request) {
-
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var recipeID string
+	json.Unmarshal(body, &recipeID)
 }

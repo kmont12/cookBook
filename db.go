@@ -8,7 +8,7 @@ import (
 )
 
 func InsertDB(insert string) {
-	//log.Println("insert called")
+	log.Println("insert called")
 	db, err := sql.Open("mysql", "root:password@/cookbook")
 	if err != nil {
 		log.Println(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
@@ -23,7 +23,7 @@ func InsertDB(insert string) {
 }
 
 func SearchDB(sel string) *sql.Rows {
-	//log.Println("select called")
+	log.Println("select called")
 	db, err := sql.Open("mysql", "root:password@/cookbook")
 	if err != nil {
 		log.Println(err.Error()) // Just for example purpose. You should use proper error handling instead of panic

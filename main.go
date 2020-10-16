@@ -12,7 +12,9 @@ func main() {
 	router.PathPrefix("/docs").HandlerFunc(IndexHandler)
 	log.Fatal(http.ListenAndServe(":8888", router))
 }
-
+/**
+IndexHandler ... main handler
+**/
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path[1:]
 	if path == "" {

@@ -40,7 +40,7 @@ $(document).ready(function(){
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
 //    console.log(dataPost);
-    $.get("/recipe/search/",
+    $.get("/recipe/search",
             dataPost,
             function(data, status) {
               console.log(data);
@@ -75,10 +75,9 @@ $(document).ready(function(){
       dataPost=dataPost + '"Rating" : '+ document.getElementById('add_rate').value+',';
     }
 
-    console.log(dataPost);
     dataPost=dataPost.slice(0,-1);
     dataPost=dataPost+'}';
-    $.post("/recipe/add/",
+    $.post("/recipe/add",
             dataPost,
             function(data, status) {
               $("#clickTest").text(status);
@@ -120,7 +119,7 @@ function openNoteSidebar() {
   document.getElementById("noteSidebar").style.width = "30%";
   document.getElementById("main").style.marginRight = "30%";
   if (currentRecipeID != null) {
-    $.get("/notes/",
+    $.get("/notes",
     currentRecipeID,
     function(data, status) {
       console.log(data);
